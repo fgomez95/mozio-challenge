@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
 import './App.css';
+import { connect } from 'react-redux';
+import { setSearchField } from './store/actions/actions';
 
-type TestProps = {
-  name: string,  
-}
+const mapStateToProps = state => ({
+  searchField: state.searchReducer.searchField
+});
 
-class Test extends Component <TestProps> {
-  render(){ return <div>{ this.props.name }</div>; }
-}
+const mapDispatchToProps = dispatch => ({
+  onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+});
 
-class App extends Component <{}> {
+
+class App extends Component{
+  componentDidMount(){
+    console.log(this.props);
+  }
   render() {
     return (
       <div className="App">
-        <Test name="Fernando" />
+        Hello World
       </div>
     );
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
