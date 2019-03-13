@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import { setSearchField, requestResults } from './store/actions/actions';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Home from './components/Home/Home';
+import Result from './containers/Result/Result';
 
 const mapStateToProps = state => ({
   searchField: state.searchReducer.searchField,
@@ -14,21 +17,20 @@ const mapDispatchToProps = dispatch => ({
   onRequestResult: () => dispatch(requestResults()),
 });
 
-
 class App extends Component{
-  componentWillMount(){
-    this.props.onRequestResult();
-  }
+  selectPlaceFrom = (data) => { console.log(data); }
+  selectPlaceTo = (data) => { console.log(data); }
+  onFormSubmit = (e) => { e.preventDefault(); console.log('form sent'); }
   render() {
-    const results = this.props.results.map((el, i) => <p key={i}>{ el }</p>);
-    const loading = this.props.isLoading ? <p>Loading...</p> : null;
     return (
-      <div className="App">
-        <input onChange={(e) => this.props.onSearchChange(e)}
-        value={this.props.searchField}/>
-        {results}
-        {loading}
-      </div>
+      <Router>
+        <div className="App">
+          <Route exact path="/"
+          render={() => (<Home onFormSubmit={this.onFormSubmit}/>)}/>
+          <Route exact path="/result" 
+          component={Result} />
+        </div>
+      </Router>
     );
   }
 }
