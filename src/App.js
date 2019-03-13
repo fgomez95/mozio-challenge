@@ -1,34 +1,40 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { setSearchField, requestResults } from './store/actions/actions';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Home from './components/Home/Home';
+import { setLoading, setError } from './store/actions/actions';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import Home from './containers/Home/Home';
 import Result from './containers/Result/Result';
+import Errors from './components/Errors/Errors';
+import Loading from './components/Loading/Loading';
 
 const mapStateToProps = state => ({
-  searchField: state.searchReducer.searchField,
-  isLoading: state.searchReducer.loading,
-  results: state.searchReducer.results,
+  loading: state.mainReducer.loading,
+  error: state.mainReducer.error,
+  errorInfo: state.mainReducer.errorInfo
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
-  onRequestResult: () => dispatch(requestResults()),
+  onSetLoading: (isLoading) => dispatch(setLoading(isLoading)),
+  onSetError: (isError, errorInfo) => dispatch(setError(isError, errorInfo))
 });
 
 class App extends Component{
-  selectPlaceFrom = (data) => { console.log(data); }
-  selectPlaceTo = (data) => { console.log(data); }
-  onFormSubmit = (e) => { e.preventDefault(); console.log('form sent'); }
   render() {
     return (
       <Router>
         <div className="App">
           <Route exact path="/"
-          render={() => (<Home onFormSubmit={this.onFormSubmit}/>)}/>
+          render={() => (<Home setError={this.props.onSetError}/>)}/>
+          
           <Route exact path="/result" 
-          component={Result} />
+          render={() => (<Result setError={this.props.onSetError} 
+                         setLoading={this.props.onSetLoading}/>)} />
+          
+          <Loading isLoading={this.props.loading}/>
+          <Errors errorInfo={this.props.errorInfo}
+          show={this.props.error} 
+          close={this.props.onSetError}/>
         </div>
       </Router>
     );

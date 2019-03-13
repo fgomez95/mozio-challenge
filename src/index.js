@@ -5,12 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import searchReducer  from './store/reducers/searchReducer';
-/*import { createLogger } from 'redux-logger';*/
+import mainReducer  from './store/reducers/rootReducer';
 import thunkMiddleware from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    searchReducer,
+    mainReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));

@@ -1,27 +1,55 @@
 /* global google */
 import React, { Component } from 'react';
+import { getParameterByName, params } from '../../modules/utils';
+import { Link } from 'react-router-dom';
+import './Result.css';
 
 class Result extends Component {
-    constructor(props){
-        super(props);
-        this.directionsService = new google.maps.DirectionsService;
-    }
+    state = {
+        result: ''
+    } 
     componentDidMount(){
-        this.calculateDistance();
+        let queryParams = {};
+        for(const param of params){
+            const val = getParameterByName(param);
+            queryParams[param] = val ? val : '';
+        }
+        this.directionsService = new google.maps.DirectionsService();
+        this.calculateDistance(queryParams);
     }
-    calculateDistance = () => {
+    calculateDistance = (queryParams) => {
+        this.props.setLoading(true);
+        const dateNow = new Date(Date.now() + 10000);
+        let depDate = new Date(Date(queryParams['date']) + dateNow.getMilliseconds());
         this.directionsService.route({
-            origin: 'Chicago, IL',
-            destination: 'Los Angeles, CA',
+            origin: queryParams['from'],
+            destination: queryParams['to'],
             travelMode: 'DRIVING',
-        }, (response, status) => {
-            console.log("response: ", response, "****");
-            console.log("status: ", status, "****");
+            drivingOptions:{
+                departureTime: depDate,
+            }
+        },(response, status) => {
+            if(status === "OK"){
+                this.props.setLoading(false);
+                this.setState({result: response.routes[0].legs[0].distance.text});
+            }else {
+                this.props.setLoading(false);
+                this.props.setError(true, status);
+            }
         });
     }
     render(){
+        let result = null;
+        if(this.state.result){
+            result = (<div className="result"> Distance: {this.state.result}</div>);
+        }
         return(
-            <div>
+            <div className="distance-wrapper">
+                <div>
+                    <Link to="/"
+                    className="home-link">Return to Home</Link>
+                </div>
+                {result}
             </div>
             );
     }

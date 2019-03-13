@@ -16,9 +16,12 @@ class AutoComplete extends Component {
     }
 
     handlePlaceChanged = () => {
-        console.log('triggered');
         const place = this.autocomplete.getPlace();
-        this.props.onPlaceChanged(place);
+        const fullAddress = `${place.name} ${place.formatted_address}`
+        this.props.onChange({ target: { 
+            name: this.props.name, 
+            value: fullAddress
+        }});
     }
 
   render() {
@@ -30,7 +33,10 @@ class AutoComplete extends Component {
         <input ref={this.autocompleteInput}
         placeholder={this.props.placeholder}
         type="text" 
-        required={this.props.required}/>
+        name={this.props.name}
+        required={this.props.required} 
+        value={this.props.value}
+        onChange={this.props.onChange}/>
         </div>
     );
   }

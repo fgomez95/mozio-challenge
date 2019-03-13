@@ -1,18 +1,14 @@
 import * as actionTypes from './actionTypes';
 
-export const setSearchField = (input) => ({
-    payload: input,
-    type: actionTypes.SET_SEARCH_FIELD
+export const setLoading = (isLoading) => ({
+    payload: isLoading,
+    type: actionTypes.SET_LOADING
 });
 
-export const requestResults = dispatch => {
-    return dispatch => {
-        dispatch({ type: actionTypes.REQUEST_RESULTS_PENDING });
-        setTimeout(()=>{
-            dispatch({ 
-                type: actionTypes.REQUEST_RESULTS_SUCCESS,
-                payload: ['hello', 'world'],
-            });
-        }, 1000);
-    };
-};
+export const setError = (isError, errorInfo) => ({
+    payload: {
+        isError,
+        errorInfo
+    },
+    type: actionTypes.SET_ERROR,
+})

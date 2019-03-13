@@ -1,0 +1,16 @@
+.distance-wrapper {
+    width: 50%;
+    max-width: 450px;
+    background-color: silver;
+    margin: auto;
+    height: 250px;
+}
+
+
+.result {
+    background-color: white;
+    width: 50%;
+    margin: auto;
+    font-size: 28px;
+    margin-top: 80px;
+}
