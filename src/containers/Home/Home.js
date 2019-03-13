@@ -1,4 +1,3 @@
-/*global URLSearchParams*/
 import React, { Component } from 'react';
 import './Home.css';
 import AutoComplete from '../../components/AutoComplete/AutoComplete';
@@ -26,7 +25,8 @@ class Home extends Component {
     }
     onFormSubmit = (e) => {
         e.preventDefault();
-        if(Object.values(this.state).some(el => el === '')) this.props.setError(true, 'Please fill required fields');
+        if(Object.values(this.state).some(el => el === '')) 
+            this.props.setError(true, 'Please fill required fields');
         let url = '/result?';
         for(let stateParam in this.state) url += `&${stateParam}=${this.state[stateParam]}`;
         this.props.history.push(url);
@@ -51,7 +51,7 @@ class Home extends Component {
                     name="to"/>
                     
                     <div className="input-wrapper">
-                        <label htmlFor="Date">Date</label>
+                        <label htmlFor="date">Date</label>
                         <input type="date" 
                         required 
                         name="date"
@@ -60,7 +60,7 @@ class Home extends Component {
                     </div>
                     
                     <div className="input-wrapper">
-                        <label htmlFor="num passengers">
+                        <label htmlFor="passengers">
                             Number of Passengers
                         </label>
                         <input type="number" 

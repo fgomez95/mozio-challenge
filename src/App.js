@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import { setLoading, setError } from './store/actions/actions';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './containers/Home/Home';
 import Result from './containers/Result/Result';
 import Errors from './components/Errors/Errors';
@@ -29,9 +29,10 @@ class App extends Component{
           
           <Route exact path="/result" 
           render={() => (<Result setError={this.props.onSetError} 
-                         setLoading={this.props.onSetLoading}/>)} />
+                         setLoading={this.props.onSetLoading}/>)}/>
           
           <Loading isLoading={this.props.loading}/>
+          
           <Errors errorInfo={this.props.errorInfo}
           show={this.props.error} 
           close={this.props.onSetError}/>

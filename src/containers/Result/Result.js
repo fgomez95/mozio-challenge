@@ -6,7 +6,11 @@ import './Result.css';
 
 class Result extends Component {
     state = {
-        result: ''
+        result: '',
+        date: '',
+        passengers: '',
+        from: '',
+        to: ''
     } 
     componentDidMount(){
         let queryParams = {};
@@ -31,7 +35,13 @@ class Result extends Component {
         },(response, status) => {
             if(status === "OK"){
                 this.props.setLoading(false);
-                this.setState({result: response.routes[0].legs[0].distance.text});
+                this.setState({
+                    result: response.routes[0].legs[0].distance.text,
+                    date: queryParams['date'],
+                    passengers: queryParams['passengers'],
+                    destination: queryParams['to'],
+                    starting: queryParams['from'],
+                });
             }else {
                 this.props.setLoading(false);
                 this.props.setError(true, status);
@@ -41,7 +51,15 @@ class Result extends Component {
     render(){
         let result = null;
         if(this.state.result){
-            result = (<div className="result"> Distance: {this.state.result}</div>);
+            result = (
+                        <div className="result"> 
+                            <div><b>Distance:</b> {this.state.result}</div>
+                            <div><b>Starting From:</b> {this.state.starting}</div>
+                            <div><b>Destination:</b> {this.state.destination}</div>
+                            <div><b>Date:</b> {this.state.date}</div>
+                            <div><b>Passengers:</b> {this.state.passengers}</div>
+                        </div>
+                    );
         }
         return(
             <div className="distance-wrapper">
